@@ -68,20 +68,34 @@ const Testimonial = () => {
 
     return (
         <>
-            <style>{`
-            @keyframes marqueeScroll {
-                0% { transform: translateX(0%); }
-                100% { transform: translateX(-50%); }
-            }
+          <style>{`
+  @keyframes marqueeScroll {
+    0% { transform: translateX(0%); }
+    100% { transform: translateX(-50%); }
+  }
 
-            .marquee-inner {
-                animation: marqueeScroll 25s linear infinite;
-            }
+  .marquee-inner {
+    animation: marqueeScroll 25s linear infinite;
+  }
 
-            .marquee-reverse {
-                animation-direction: reverse;
-            }
-        `}</style>
+  .marquee-reverse {
+    animation-direction: reverse;
+  }
+
+  /* ✅ Make animation faster on small screens */
+  @media (max-width: 768px) {
+    .marquee-inner {
+      animation-duration: 15s; /* faster on mobile */
+    }
+  }
+
+  @media (max-width: 480px) {
+    .marquee-inner {
+      animation-duration: 12s; /* even faster on very small screens */
+    }
+  }
+`}</style>
+
             
             <div className='text-center py-10'>
                 <h2 className='text-slate-700 text-[42px] font-semibold'>Loved by Creators</h2>
