@@ -1,0 +1,58 @@
+export const generateImage = async (req ,res)=>{
+
+    try {
+        const {userId} = req.auth();
+        const {prompt , publish} = req.body;
+         const plan = req.plan;
+         const free_usage = req.free_usage;
+
+          if (plan !== 'premuim' && free_usage>=10){
+            return res.json({
+               success:false,
+                message:"Limit reached. Upgrade to continue"
+          })
+
+         }
+const form = new FormData()
+form.append('prompt', prompt);
+
+ const {data} = await axios.post('https://clipdrop-api.co/text-to-image/v1',form,{
+    headers:{
+    'x-api-key': process.env.CLIPDROP_API_KEY,},
+    responseType:"arraybuffer",
+  
+});
+
+const base64Image = `data:image/png;base64,${Buffer.from(data, 'binary').toString('base64')} `;
+
+ const {secure_url}=await cloudinary.uploader.upload(base64Image);
+
+      
+
+const content = response.choices[0].message.content
+
+await sql`
+  INSERT INTO creations (user_id, prompt, content, type,publish)
+  VALUES (${userId}, ${prompt}, ${secure_url}, 'image',${publish ?? false})
+`;
+
+
+if (plan !== 'premuim'){
+    await clerkClient.users.updateUserMetadata(userId ,{
+        privateMetadata :{
+            free_usage : free_usage +1
+        }
+    })
+}
+
+res.json({success:true,content:secure_url})
+    }
+    catch (err){
+        console.log(err);
+        res.json({
+            success:false,
+            message:err.message
+        })
+    }
+
+}
