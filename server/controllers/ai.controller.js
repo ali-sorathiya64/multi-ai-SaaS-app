@@ -133,12 +133,12 @@ export const generateImage = async (req ,res)=>{
         const {userId} = req.auth();
         const {prompt , publish} = req.body;
          const plan = req.plan;
-        //  const free_usage = req.free_usage;
+         const free_usage = req.free_usage; // ✅ Add this line
 
-          if (plan !== 'premium' ){
+          if (plan !== 'premium' && free_usage >= 10){ // ✅ Modify condition
             return res.json({
                success:false,
-                message:"This feature only available in the premium plan"
+                message:"Limit reached. Upgrade to continue"
           })
 
          }
@@ -166,13 +166,13 @@ await sql`
   VALUES (${userId}, ${prompt}, ${secure_url}, 'image',${publish ?? false})
 `;
 
-// if (plan !== 'premium'){
-//     await clerkClient.users.updateUserMetadata(userId ,{
-//         privateMetadata :{
-//             free_usage : free_usage +1
-//         }
-//     })
-// }
+if (plan !== 'premium'){ // ✅ Add free usage increment
+    await clerkClient.users.updateUserMetadata(userId ,{
+        privateMetadata :{
+            free_usage : free_usage +1
+        }
+    })
+}
 
 
 res.json({success:true,content:secure_url})
@@ -194,12 +194,12 @@ export const removeImageBackground = async (req ,res)=>{
         const {userId} = req.auth();
         const image = req.file;
          const plan = req.plan;
-        //  const free_usage = req.free_usage;
+         const free_usage = req.free_usage; // ✅ Add this line
 
-          if (plan !== 'premium' ){
+          if (plan !== 'premium' && free_usage >= 10){ // ✅ Modify condition
             return res.json({
                success:false,
-                message:"This feature only available in the premium plan"
+                message:"Limit reached. Upgrade to continue"
           })
 
          }
@@ -225,13 +225,13 @@ await sql`
   VALUES (${userId}, 'Remove background from image', ${secure_url}, 'image');
 `;
 
-// if (plan !== 'premium'){
-//     await clerkClient.users.updateUserMetadata(userId ,{
-//         privateMetadata :{
-//             free_usage : free_usage +1
-//         }
-//     })
-// }
+if (plan !== 'premium'){ // ✅ Add free usage increment
+    await clerkClient.users.updateUserMetadata(userId ,{
+        privateMetadata :{
+            free_usage : free_usage +1
+        }
+    })
+}
 
 res.json({success:true,content:secure_url})
     }
@@ -252,11 +252,12 @@ export const removeImageObject = async (req, res) => {
     const image = req.file;
     const { object } = req.body;
     const plan = req.plan;
+    const free_usage = req.free_usage; // ✅ Add this line
 
-    if (plan !== 'premium') {
+    if (plan !== 'premium' && free_usage >= 10) { // ✅ Modify condition
       return res.json({
         success: false,
-        message: "This feature only available in the premium plan"
+        message: "Limit reached. Upgrade to continue"
       });
     }
 
@@ -277,6 +278,14 @@ export const removeImageObject = async (req, res) => {
       VALUES (${userId}, ${`Removed ${object} from image`}, ${imageUrl}, 'image');
     `;
 
+    if (plan !== 'premium') { // ✅ Add free usage increment
+      await clerkClient.users.updateUserMetadata(userId, {
+        privateMetadata: {
+          free_usage: free_usage + 1
+        }
+      });
+    }
+
     res.json({ success: true, content: imageUrl });
 
   } catch (err) {
@@ -288,17 +297,18 @@ export const removeImageObject = async (req, res) => {
   }
 };
 
-
-
-
 export const summarizeDocument = async (req, res) => {
   try {
     const { userId } = req.auth();
     const file = req.file;
     const plan = req.plan;
-
-    if (plan !== "premium") {
-      return res.json({ success: false, message: "This feature is only for premium users" });
+    const free_usage = req.free_usage; 
+    if (plan !== "premium" && free_usage >= 10) { 
+      
+      return res.json({ 
+        success: false, 
+        message: "Limit reached. Upgrade to continue" 
+      });
     }
 
     if (!file) {
@@ -317,12 +327,11 @@ export const summarizeDocument = async (req, res) => {
     });
 
     pdfParser.on("pdfParser_dataReady", async (pdfData) => {
-      // helper safe decode function
       const safeDecode = (text) => {
         try {
           return decodeURIComponent(text);
         } catch {
-          return text; // return as-is if decoding fails
+          return text; 
         }
       };
 
@@ -346,7 +355,6 @@ Document:
 ${text}
 `;
 
-
       const response = await AI.chat.completions.create({
         model: "gemini-2.0-flash",
         messages: [{ role: "user", content: prompt }],
@@ -360,6 +368,14 @@ ${text}
         INSERT INTO creations (user_id, prompt, content, type)
         VALUES (${userId}, 'Summarize uploaded document', ${content}, 'document-summary');
       `;
+
+      if (plan !== 'premium') { 
+        await clerkClient.users.updateUserMetadata(userId, {
+          privateMetadata: {
+            free_usage: free_usage + 1
+          }
+        });
+      }
 
       res.json({ success: true, content });
     });
