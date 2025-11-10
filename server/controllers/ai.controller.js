@@ -303,8 +303,9 @@ export const summarizeDocument = async (req, res) => {
     const file = req.file;
     const plan = req.plan;
     const free_usage = req.free_usage; 
-    if (plan !== "premium" && free_usage >= 10) { 
-      
+    if (plan !== "premium" && free_usage >= 10) 
+      { 
+
       return res.json({ 
         success: false, 
         message: "Limit reached. Upgrade to continue" 
