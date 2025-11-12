@@ -4,7 +4,6 @@ import { clerkClient } from "@clerk/express";
 import axios from "axios";
 import {v2 as cloudinary} from 'cloudinary'; 
 import fs from 'fs';
-// import * as pdf from 'pdf-parse';
 import PDFParser from "pdf2json";
 
 const AI = new OpenAI({
@@ -133,9 +132,9 @@ export const generateImage = async (req ,res)=>{
         const {userId} = req.auth();
         const {prompt , publish} = req.body;
          const plan = req.plan;
-         const free_usage = req.free_usage; // ✅ Add this line
+         const free_usage = req.free_usage;  
 
-          if (plan !== 'premium' && free_usage >= 10){ // ✅ Modify condition
+          if (plan !== 'premium' && free_usage >= 10){ 
             return res.json({
                success:false,
                 message:"Limit reached. Upgrade to continue"
@@ -166,7 +165,7 @@ await sql`
   VALUES (${userId}, ${prompt}, ${secure_url}, 'image',${publish ?? false})
 `;
 
-if (plan !== 'premium'){ // ✅ Add free usage increment
+if (plan !== 'premium'){ 
     await clerkClient.users.updateUserMetadata(userId ,{
         privateMetadata :{
             free_usage : free_usage +1
@@ -194,9 +193,9 @@ export const removeImageBackground = async (req ,res)=>{
         const {userId} = req.auth();
         const image = req.file;
          const plan = req.plan;
-         const free_usage = req.free_usage; // ✅ Add this line
+         const free_usage = req.free_usage;  
 
-          if (plan !== 'premium' && free_usage >= 10){ // ✅ Modify condition
+          if (plan !== 'premium' && free_usage >= 10){ 
             return res.json({
                success:false,
                 message:"Limit reached. Upgrade to continue"
@@ -225,7 +224,7 @@ await sql`
   VALUES (${userId}, 'Remove background from image', ${secure_url}, 'image');
 `;
 
-if (plan !== 'premium'){ // ✅ Add free usage increment
+if (plan !== 'premium'){
     await clerkClient.users.updateUserMetadata(userId ,{
         privateMetadata :{
             free_usage : free_usage +1
@@ -252,9 +251,8 @@ export const removeImageObject = async (req, res) => {
     const image = req.file;
     const { object } = req.body;
     const plan = req.plan;
-    const free_usage = req.free_usage; // ✅ Add this line
-
-    if (plan !== 'premium' && free_usage >= 10) { // ✅ Modify condition
+    const free_usage = req.free_usage; 
+    if (plan !== 'premium' && free_usage >= 10) { 
       return res.json({
         success: false,
         message: "Limit reached. Upgrade to continue"
@@ -278,7 +276,7 @@ export const removeImageObject = async (req, res) => {
       VALUES (${userId}, ${`Removed ${object} from image`}, ${imageUrl}, 'image');
     `;
 
-    if (plan !== 'premium') { // ✅ Add free usage increment
+    if (plan !== 'premium') { 
       await clerkClient.users.updateUserMetadata(userId, {
         privateMetadata: {
           free_usage: free_usage + 1
@@ -336,7 +334,6 @@ export const summarizeDocument = async (req, res) => {
         }
       };
 
-      // safely decode text from PDF
       const text = pdfData.Pages.map((page) =>
         page.Texts.map((t) => safeDecode(t.R[0].T)).join(" ")
       ).join("\n");
