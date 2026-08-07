@@ -1,7 +1,4 @@
 
-
-//  middleware to check userid and hashPremium of the user
-
 import { clerkClient } from "@clerk/express";
 
  const auth = async (req , res ,next) =>{
