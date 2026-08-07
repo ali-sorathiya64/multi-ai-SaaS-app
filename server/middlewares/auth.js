@@ -36,4 +36,5 @@ import { clerkClient } from "@clerk/express";
      }
 
 }
+
 export default auth;
