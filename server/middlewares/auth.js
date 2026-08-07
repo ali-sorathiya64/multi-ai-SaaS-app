@@ -4,7 +4,6 @@
 
 import { clerkClient } from "@clerk/express";
 
-
  const auth = async (req , res ,next) =>{
 
     try{
