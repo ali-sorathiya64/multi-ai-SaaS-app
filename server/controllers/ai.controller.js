@@ -11,6 +11,7 @@ const AI = new OpenAI({
     baseURL: "https://generativelanguage.googleapis.com/v1beta/openai/"
 });
 
+
 export const generateArticle = async (req ,res)=>{
 
     try {
