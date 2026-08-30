@@ -5,7 +5,7 @@ An AI-powered full-stack web application that helps users generate high-quality 
 The project is divided into two repositories:
 
 * **Frontend** – React + Vite + Tailwind CSS
-* **Backend** – Node.js + Express + PostgreSQL + Gemini AI
+* **Backend** – Node.js + Express + PostgreSQL + Gemini AI + Docker
 
 ---
 
@@ -48,7 +48,7 @@ The project is divided into two repositories:
 * ClipDrop API
 * Clerk
 * pdf2json
-
+* Docker
 ---
 
 ## 📁 Project Structure
