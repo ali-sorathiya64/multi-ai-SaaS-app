@@ -7,7 +7,7 @@ import connectCloudinary from './config/cloudinary.js';
 import userRoutes from './routes/user.routes.js';
 dotenv.config();
 const app = express();
-const PORT = process.env.PORT || 8000;
+const PORT = process.env.PORT || 5000;
 
 
 await connectCloudinary();
