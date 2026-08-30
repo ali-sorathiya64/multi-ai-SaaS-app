@@ -238,7 +238,7 @@ This project is licensed under the MIT License.
 
 ## 👨‍💻 Author
 
-Developed with ❤️ using
+Developed with using
 
 * React
 * Vite
@@ -246,6 +246,7 @@ Developed with ❤️ using
 * Node.js
 * Express.js
 * PostgreSQL
+* Docker 
 * Gemini AI
 * Clerk
 * Cloudinary
