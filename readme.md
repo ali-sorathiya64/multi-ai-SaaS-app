@@ -197,6 +197,7 @@ Dashboard.png
 ImageGenerator.png
 
 PDFSummary.png
+
 ```
 
 ---
