@@ -2,7 +2,6 @@ import sql from "../config/Db.js"
 
 export const getUserCreations = async (req, res) => {
 
-
     try {
 
         const { userId } = req.auth();
