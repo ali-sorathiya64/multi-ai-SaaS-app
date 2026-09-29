@@ -18,4 +18,3 @@ services:
       - "5173:5173"
     depends_on:
       - backend
-
