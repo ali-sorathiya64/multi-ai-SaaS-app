@@ -11,7 +11,6 @@ import { upload } from '../config/Multer.js';
 
 const airouter = express.Router();
 
-
 airouter.post('/generate-article',auth,generateArticle);
 airouter.post('/generate-blog-title',auth,generateBlogTitle);
 airouter.post('/generate-image',auth,generateImage);
