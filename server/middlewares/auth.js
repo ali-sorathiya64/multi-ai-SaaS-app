@@ -9,7 +9,6 @@ import { clerkClient } from "@clerk/express";
         const hashPremium = await has ({plan :'premium'});
         const user = await clerkClient.users.getUser(userId);
 
-
         if (!hashPremium && user.privateMetadata.free_usage){
             req.free_usage = user.privateMetadata.free_usage
         }
@@ -31,7 +30,6 @@ import { clerkClient } from "@clerk/express";
         })
 
      }
-
 }
 
 export default auth;
