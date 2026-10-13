@@ -43,6 +43,7 @@ The project is divided into two repositories:
 * Node.js
 * Express.js
 * PostgreSQL
+* Neon DB
 * Gemini API
 * Cloudinary
 * ClipDrop API
