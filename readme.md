@@ -50,6 +50,7 @@ The project is divided into two repositories:
 * Clerk
 * pdf2json
 * Docker
+* Docker-compose 
 ---
 
 ## 📁 Project Structure
