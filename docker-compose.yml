@@ -1,7 +1,7 @@
 services:
    backend:
     build: ./server
-    container_name: saas-backend
+    container_name: saas_backend
     restart: always
     env_file:
       - ./server/.env
@@ -10,7 +10,7 @@ services:
 
    client:
     build: ./client
-    container_name: saas-frontend
+    container_name: saas_frontend
     restart: always
     env_file:
       - ./client/.env
